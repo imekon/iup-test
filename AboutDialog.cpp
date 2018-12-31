@@ -13,16 +13,6 @@ AboutDialog::AboutDialog()
 	IupSetAttribute(dialog, "TITLE", "Hello World!");
 }
 
-AboutDialog::~AboutDialog()
-{
-	IupDestroy(dialog);
-}
-
-void AboutDialog::showModal()
-{
-	IupPopup(dialog, IUP_CENTER, IUP_CENTER);
-}
-
 int AboutDialog::onOK(Ihandle * self)
 {
 	return IUP_CLOSE;

@@ -2,16 +2,13 @@
 
 #include <iup.h>
 
-class AboutDialog
+#include "GenericDialog.h"
+
+class AboutDialog : public GenericDialog
 {
 public:
 	AboutDialog();
-	~AboutDialog();
-
-	void showModal();
 
 private:
-	Ihandle *dialog;
-
 	static int onOK(Ihandle *self);
 };

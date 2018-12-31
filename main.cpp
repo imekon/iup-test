@@ -1,5 +1,6 @@
 #include <iup.h>
 
+#include "OpenFileDialog.h"
 #include "AboutDialog.h"
 
 static int onFileNew(Ihandle *self)
@@ -9,17 +10,23 @@ static int onFileNew(Ihandle *self)
 
 static int onFileOpen(Ihandle *self)
 {
-	return 0;
+	OpenFileDialog dialog;
+	if (dialog.showModal())
+	{
+
+	}
+
+	return IUP_DEFAULT;
 }
 
 static int onFileSave(Ihandle *self)
 {
-	return 0;
+	return IUP_DEFAULT;
 }
 
 static int onFileExport(Ihandle *self)
 {
-	return 0;
+	return IUP_DEFAULT;
 }
 
 static int onEditCut(Ihandle *self)
@@ -86,7 +93,17 @@ int WinMain()
 	auto subMenuHelp = IupSubmenu("Help", menuHelp);
 	auto menu = IupMenu(subMenuFile, subMenuEdit, subMenuHelp, nullptr);
 
-	auto box = IupVbox(nullptr);
+	auto songBox = IupVbox(IupLabel("Inside song"), nullptr);
+	auto patternBox = IupVbox(IupLabel("Inside pattern"), nullptr);
+
+	IupSetAttribute(songBox, "TABTITLE", "Song");
+	IupSetAttribute(patternBox, "TABTITLE", "Pattern");
+
+	auto tab = IupTabs(songBox, patternBox, nullptr);
+
+	auto box = IupVbox(tab, nullptr);
+	IupSetAttribute(box, "MARGIN", "10x10");
+	IupSetAttribute(box, "GAP", "10");
 
 	auto dialog = IupDialog(box);
 	IupSetAttributeHandle(dialog, "MENU", menu);
