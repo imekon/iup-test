@@ -93,8 +93,12 @@ int WinMain()
 	auto subMenuHelp = IupSubmenu("Help", menuHelp);
 	auto menu = IupMenu(subMenuFile, subMenuEdit, subMenuHelp, nullptr);
 
-	auto songBox = IupVbox(IupLabel("Inside song"), nullptr);
-	auto patternBox = IupVbox(IupLabel("Inside pattern"), nullptr);
+	auto fillerSong = IupLabel("Inside song");
+	auto fillerPattern = IupLabel("Inside pattern");
+	IupSetAttribute(fillerSong, "EXPAND", "YES");
+	IupSetAttribute(fillerPattern, "EXPAND", "YES");
+	auto songBox = IupVbox(fillerSong, nullptr);
+	auto patternBox = IupVbox(fillerPattern, nullptr);
 
 	IupSetAttribute(songBox, "TABTITLE", "Song");
 	IupSetAttribute(patternBox, "TABTITLE", "Pattern");
