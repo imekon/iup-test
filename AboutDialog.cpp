@@ -8,7 +8,7 @@ AboutDialog::AboutDialog()
 	IupSetCallback(okButton, "ACTION", onOK);
 	auto box = IupHbox(label, okButton, nullptr);
 	IupSetAttribute(box, "MARGIN", "10x10");
-	IupSetAttribute(box, "GAP", "10");
+	IupSetInt(box, "GAP", 10);
 	dialog = IupDialog(box);
 	IupSetAttribute(dialog, "TITLE", "Hello World!");
 }

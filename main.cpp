@@ -1,4 +1,5 @@
 #include <iup.h>
+#include <iupdraw.h>
 
 #include "OpenFileDialog.h"
 #include "AboutDialog.h"
@@ -57,6 +58,40 @@ static int onFileExit(Ihandle *self)
 	return IUP_CLOSE;
 }
 
+static int onSongAction(Ihandle *canvas)
+{
+	int width, height;
+
+	IupDrawBegin(canvas);
+
+	IupDrawGetSize(canvas, &width, &height);
+
+	IupSetAttribute(canvas, "DRAWCOLOR", "192 192 192");
+	IupSetAttribute(canvas, "DRAWSTYLE", "FILL");
+	IupDrawRectangle(canvas, 0, 0, width - 1, height - 1);
+
+	IupSetAttribute(canvas, "DRAWCOLOR", "0 0 0");
+	IupSetAttribute(canvas, "DRAWSTYLE", "STROKE");
+	IupDrawRectangle(canvas, 10, 10, 40, 30);
+
+	IupDrawEnd(canvas);
+
+	return IUP_DEFAULT;
+}
+
+static int onPatternAction(Ihandle *canvas)
+{
+	int width, height;
+
+	IupDrawBegin(canvas);
+
+	IupDrawGetSize(canvas, &width, &height);
+
+	IupDrawEnd(canvas);
+
+	return IUP_DEFAULT;
+}
+
 int WinMain()
 {
 	IupOpen(nullptr, nullptr);
@@ -93,12 +128,14 @@ int WinMain()
 	auto subMenuHelp = IupSubmenu("Help", menuHelp);
 	auto menu = IupMenu(subMenuFile, subMenuEdit, subMenuHelp, nullptr);
 
-	auto fillerSong = IupLabel("Inside song");
-	auto fillerPattern = IupLabel("Inside pattern");
-	IupSetAttribute(fillerSong, "EXPAND", "YES");
-	IupSetAttribute(fillerPattern, "EXPAND", "YES");
-	auto songBox = IupVbox(fillerSong, nullptr);
-	auto patternBox = IupVbox(fillerPattern, nullptr);
+	auto canvasSong = IupCanvas(nullptr);
+	auto canvasPattern = IupCanvas(nullptr);
+	IupSetAttribute(canvasSong, "EXPAND", "YES");
+	IupSetAttribute(canvasPattern, "EXPAND", "YES");
+	IupSetCallback(canvasSong, "ACTION", (Icallback)onSongAction);
+	IupSetCallback(canvasPattern, "ACTION", (Icallback)onPatternAction);
+	auto songBox = IupVbox(canvasSong, nullptr);
+	auto patternBox = IupVbox(canvasPattern, nullptr);
 
 	IupSetAttribute(songBox, "TABTITLE", "Song");
 	IupSetAttribute(patternBox, "TABTITLE", "Pattern");
@@ -107,7 +144,7 @@ int WinMain()
 
 	auto box = IupVbox(tab, nullptr);
 	IupSetAttribute(box, "MARGIN", "10x10");
-	IupSetAttribute(box, "GAP", "10");
+	IupSetInt(box, "GAP", 10);
 
 	auto dialog = IupDialog(box);
 	IupSetAttributeHandle(dialog, "MENU", menu);
